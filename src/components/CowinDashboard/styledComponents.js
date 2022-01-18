@@ -14,7 +14,7 @@ export const CowinContainer = styled.div`
 
 export const Icon = styled.div`
   color: #cbd5e1;
-  font-size: 60px;
+  font-size: 30px;
   margin-right: 10px;
 `
 export const Heading = styled.h1`
@@ -30,4 +30,25 @@ export const MainHeading = styled(Heading)`
   color: #cbd5e1;
   margin-top: 5px;
   margin-bottom: 20px;
+`
+export const LoaderContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+`
+
+export const FailureContainer = styled.div`
+  text-align: center;
+`
+
+export const FailureImage = styled.img`
+  height: 400px;
+  width: 600px;
+`
+
+export const LogoImage = styled.img`
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
 `

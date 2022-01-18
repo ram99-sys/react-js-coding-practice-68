@@ -1,10 +1,10 @@
 import {XAxis, YAxis, Tooltip, Legend, Bar, BarChart} from 'recharts'
 
-import {ChartContainer} from './styledComponents'
+import {ChartContainer, Heading} from './styledComponents'
 
 const VaccinationCoverage = props => {
   const {vaccinationDetails} = props
-  console.log(vaccinationDetails)
+  // console.log(vaccinationDetails)
 
   const DataFormatter = number => {
     if (number > 1000) {
@@ -15,6 +15,7 @@ const VaccinationCoverage = props => {
 
   return (
     <ChartContainer>
+      <Heading>Vaccination Coverage</Heading>
       <BarChart
         width={1000}
         height={300}
@@ -38,7 +39,14 @@ const VaccinationCoverage = props => {
           }}
         />
         <Tooltip />
-        <Legend />
+        <Legend
+          wrapperStyle={{
+            paddingTop: 20,
+            textAlign: 'center',
+            fontSize: 12,
+            fontFamily: 'Roboto',
+          }}
+        />
         <Bar
           dataKey="dose1"
           name="Dose 1"

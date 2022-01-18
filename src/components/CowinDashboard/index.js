@@ -1,13 +1,19 @@
 import {Component} from 'react'
-import {HiOutlinePlusCircle} from 'react-icons/hi'
+import Loader from 'react-loader-spinner'
 import VaccinationCoverage from '../VaccinationCoverage'
+import VaccinationByGender from '../VaccinationByGender'
+import VaccinationByAge from '../VaccinationByAge'
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css'
 import {
   CowinContainer,
-  Icon,
+  LogoImage,
   Heading,
   GlobalStyles,
   IconHeading,
   MainHeading,
+  LoaderContainer,
+  FailureContainer,
+  FailureImage,
 } from './styledComponents'
 // AiFillPlusCircle
 
@@ -20,7 +26,6 @@ const apiConstants = {
 
 class CowinDashboard extends Component {
   state = {
-    apiData: [],
     apiStatus: apiConstants.initial,
     vaccinationByDateDataList: [],
     vaccinationByAgeDataList: [],
@@ -38,13 +43,13 @@ class CowinDashboard extends Component {
     const response = await fetch(covidVaccinationDataApiUrl)
     if (response.ok) {
       const data = await response.json()
-      console.log(data)
+      // console.log(data)
       const updatedData = {
         last7DaysVaccination: data.last_7_days_vaccination,
         vaccinationByAge: data.vaccination_by_age,
         vaccinationByGender: data.vaccination_by_gender,
       }
-      console.log(updatedData)
+      // console.log(updatedData)
 
       const last7DaysVaccinationData = updatedData.last7DaysVaccination.map(
         eachObject => ({
@@ -53,7 +58,7 @@ class CowinDashboard extends Component {
           dose2: eachObject.dose_2,
         }),
       )
-      console.log(last7DaysVaccinationData)
+      // console.log(last7DaysVaccinationData)
 
       const vaccinationByAgeData = updatedData.vaccinationByAge.map(
         eachObject => ({
@@ -61,7 +66,7 @@ class CowinDashboard extends Component {
           count: eachObject.count,
         }),
       )
-      console.log(vaccinationByAgeData)
+      // console.log(vaccinationByAgeData)
 
       const vaccinationByGenderData = updatedData.vaccinationByGender.map(
         eachObject => ({
@@ -69,7 +74,7 @@ class CowinDashboard extends Component {
           count: eachObject.count,
         }),
       )
-      console.log(vaccinationByGenderData)
+      // console.log(vaccinationByGenderData)
       this.setState({
         apiStatus: apiConstants.success,
         vaccinationByDateDataList: last7DaysVaccinationData,
@@ -82,18 +87,38 @@ class CowinDashboard extends Component {
   }
 
   renderSuccessView = () => {
-    const {vaccinationByDateDataList} = this.state
+    const {
+      vaccinationByDateDataList,
+      vaccinationByGenderList,
+      vaccinationByAgeDataList,
+    } = this.state
     // console.log(vaccinationByDateDataList)
     return (
-      <div>
+      <>
         <VaccinationCoverage vaccinationDetails={vaccinationByDateDataList} />
-      </div>
+        <VaccinationByGender
+          vaccinationByGenderDetails={vaccinationByGenderList}
+        />
+        <VaccinationByAge vaccinationByAgeDetails={vaccinationByAgeDataList} />
+      </>
     )
   }
 
-  renderInProgressView = () => {}
+  renderInProgressView = () => (
+    <LoaderContainer data-testid="loader">
+      <Loader type="ThreeDots" color="#ffffff" height={80} width={80} />
+    </LoaderContainer>
+  )
 
-  renderFailureView = () => {}
+  renderFailureView = () => (
+    <FailureContainer>
+      <FailureImage
+        src="https://assets.ccbp.in/frontend/react-js/api-failure-view.png"
+        alt="failure view"
+      />
+      <h1>Something went wrong</h1>
+    </FailureContainer>
+  )
 
   renderStatusView = () => {
     const {apiStatus} = this.state
@@ -115,9 +140,10 @@ class CowinDashboard extends Component {
         <GlobalStyles />
         <CowinContainer>
           <IconHeading>
-            <Icon>
-              <HiOutlinePlusCircle />
-            </Icon>
+            <LogoImage
+              src="https://assets.ccbp.in/frontend/react-js/cowin-logo.png"
+              alt="website logo"
+            />
             <Heading>CO-WIN</Heading>
           </IconHeading>
           <MainHeading>CoWIN Vaccination in India</MainHeading>
